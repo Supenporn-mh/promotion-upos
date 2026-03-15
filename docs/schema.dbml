@@ -1,0 +1,39 @@
+// -----------------------------------------------------------------------------
+// Database Schema: Promotion System
+// Tool: DBML (Database Markup Language)
+// -----------------------------------------------------------------------------
+
+Table promotions {
+  id int [pk, increment]
+  name varchar(255) [not null, note: "ชื่อโปรโมชั่น เช่น ลดน้ำดื่ม 10 บาท"]
+  
+  // Rules
+  eligibility enum('MEMBER', 'GENERAL') [not null, note: "สิทธิการใช้งาน: สมาชิก หรือ ลูกค้าทั่วไป"]
+  promo_type enum('DISCOUNT', 'REDEMPTION', 'FREEBIE') [not null, note: "ประเภทโปรโมชั่น: ส่วนลด, แลกซื้อ, ของแถม"]
+  target_type enum('ITEM', 'CATEGORY', 'TOTAL_SALES') [not null, note: "ประเภทสินค้าที่ร่วมรายการ: รายสินค้า, หมวดหมู่, ยอดซื้อ"]
+  
+  // Benefits
+  discount_type enum('PERCENT', 'FIXED_AMOUNT') [note: "รูปแบบส่วนลด: %, บาท"]
+  discount_value decimal(10, 2) [note: "มูลค่าส่วนลด"]
+  max_discount decimal(10, 2) [default: 0, note: "จำกัดส่วนลดสูงสุด: 0 = ไม่จำกัด"]
+  
+  // Schedule & Quotas
+  start_datetime datetime [not null]
+  end_datetime datetime [not null]
+  total_quota int [default: null, note: "จำนวนโปรโมชั่นรวม: null = unlimited"]
+  used_quota int [default: 0, note: "จำนวนที่ใช้ไปแล้ว"]
+  
+  // Metadata
+  status enum('ACTIVE', 'INACTIVE', 'EXPIRED') [default: 'ACTIVE']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+// Map promotions to specific items or categories if target_type is 'ITEM' or 'CATEGORY'
+Table promotion_targets {
+  id int [pk, increment]
+  promotion_id int [ref: > promotions.id]
+  target_id varchar(50) [not null, note: "Product ID or Category ID from Main POS System"]
+  target_name varchar(255) [note: "Cached name for display, e.g., สลัดไก่, ชาบู"]
+  required_quantity int [default: 1, note: "จำนวนที่ต้องซื้อ หรือต้องใช้แลก (เช่น สลัดไก่ 1 ชิ้น)"]
+}

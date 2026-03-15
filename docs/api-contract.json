@@ -1,0 +1,92 @@
+{
+  "info": {
+    "title": "Promotion API Contract",
+    "version": "1.0.0",
+    "description": "API Gateway for POS Promotion System plugin"
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v1/promotions",
+      "summary": "List all paginated promotions",
+      "queryString": {
+        "page": "int (default 1)",
+        "limit": "int (default 10, 20, 50)",
+        "search": "string (optional)"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "items": [
+            {
+              "id": 1,
+              "name": "ลดน้ำดื่ม 10 บาท",
+              "eligibility": "MEMBER",
+              "promo_type": "DISCOUNT",
+              "start_datetime": "2025-04-05T00:00:00Z",
+              "end_datetime": "2025-04-30T20:00:00Z",
+              "discount_type": "PERCENT",
+              "discount_value": 15,
+              "quota_remaining": 4,
+              "status": "ACTIVE"
+            }
+          ],
+          "pagination": {
+            "total": 50,
+            "page": 1,
+            "limit": 10
+          }
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/promotions",
+      "summary": "Create a new promotion",
+      "request": {
+        "body": {
+          "name": "ลดน้ำดื่ม 10 บาท",
+          "eligibility": "MEMBER",
+          "promo_type": "DISCOUNT",
+          "target_type": "ITEM",
+          "targets": [
+            {"target_id": "P001", "target_name": "สลัดไก่", "required_quantity": 1},
+            {"target_id": "P002", "target_name": "โค้ก", "required_quantity": 1}
+          ],
+          "discount_type": "PERCENT",
+          "discount_value": 15,
+          "max_discount": 0,
+          "start_datetime": "2025-04-05T00:00:00Z",
+          "end_datetime": "2025-04-30T20:00:00Z",
+          "total_quota": 100
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "message": "Promotion created successfully",
+          "id": 1
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pos/products",
+      "summary": "Fetch product list from POS for dropdown selection",
+      "queryString": {
+        "search": "string (optional)",
+        "type": "string (ITEM, CATEGORY)"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "data": [
+            {"id": "P001", "name": "สลัดไก่", "type": "ITEM"},
+            {"id": "P002", "name": "ชาบู", "type": "ITEM"},
+            {"id": "C001", "name": "เครื่องดื่ม", "type": "CATEGORY"}
+          ]
+        }
+      }
+    }
+  ]
+}
