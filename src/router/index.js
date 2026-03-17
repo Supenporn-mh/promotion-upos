@@ -8,7 +8,7 @@ import ReportView from '../views/ReportView.vue'
 import PanelManagementView from '../views/PanelManagementView.vue'
 
 const routes = [
-  { path: '/', redirect: '/dashboard' },
+  { path: '/', redirect: '/promotions' },
   { path: '/dashboard', name: 'dashboard', component: DashboardView },
   
   // Promotions
@@ -31,7 +31,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 

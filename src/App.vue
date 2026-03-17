@@ -11,14 +11,9 @@
       <div class="flex-1 py-6 px-4 space-y-2 overflow-y-auto font-medium text-[13px] tracking-wide">
         <label class="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] ml-2 mb-3 block">Main Menu</label>
         
-        <router-link to="/dashboard" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-          <ph-squares-four :size="20" weight="bold" class="opacity-60" /> 
-          แดชบอร์ด
-        </router-link>
-        
         <router-link to="/promotions" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
           <ph-tag :size="20" weight="bold" class="opacity-60" /> 
-          รายการโปรโมชั่น
+          รายการโปรโมชัน
         </router-link>
         
         <router-link to="/pos-display" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center justify-between px-4 py-3 rounded-xl transition-all group text-gray-500 hover:bg-gray-50 hover:text-gray-900">
@@ -28,11 +23,6 @@
           </div>
           <span class="bg-gray-100 text-gray-400 text-[10px] px-2 py-0.5 rounded-md font-semibold">New</span>
         </router-link>
-
-        <router-link to="/panel-management" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-          <ph-grid-four :size="20" weight="bold" class="opacity-60" /> 
-          จัดการเมนูแนะนำ / Panel
-        </router-link>
         
         <div class="pt-4 pb-2">
           <div class="border-t border-gray-100"></div>
@@ -41,12 +31,7 @@
         
         <router-link to="/history" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
           <ph-clock-counter-clockwise :size="20" weight="bold" class="opacity-60" /> 
-          ประวัติการใช้งาน
-        </router-link>
-        
-        <router-link to="/reports" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-          <ph-chart-bar :size="20" weight="bold" class="opacity-60" /> 
-          รายงานภาพรวม
+          ประวัติการใช้งานโปรโมชัน
         </router-link>
       </div>
       

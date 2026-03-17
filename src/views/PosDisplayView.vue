@@ -5,7 +5,7 @@
       <div>
         <h2 class="text-3xl font-bold text-gray-900 tracking-tight">แสดงผลบนหน้า POS</h2>
         <p class="text-[13px] font-medium text-gray-500 mt-1.5 flex items-center gap-2">
-          <ph-desktop weight="fill" class="text-gray-400" /> จัดการโปรโมชั่นที่จะไปโผล่เป็นปุ่มให้ Cashier แจ้งลูกค้า
+          <ph-desktop weight="fill" class="text-gray-400" /> จัดการโปรโมชันที่จะไปโผล่เป็นปุ่มให้ Cashier แจ้งลูกค้า
         </p>
       </div>
       <div class="flex gap-3">
@@ -24,13 +24,6 @@
             :options="[{label:'Headquarter', value:'Headquarter'}, {label:'Canteen', value:'Canteen'}, {label:'NIST', value:'NIST'}]"
             v-model="filters.branch"
           />
-       </div>
-       <div class="flex items-center gap-4 text-xs font-semibold text-gray-400">
-         <span>Show</span>
-          <select class="bg-gray-50 border border-gray-100 rounded-lg px-2 py-1.5 text-gray-900 outline-none cursor-pointer">
-            <option>10</option><option>20</option>
-          </select>
-          <span>entries</span>
        </div>
        <div class="flex-1 max-w-sm ml-auto">
           <div class="relative">
@@ -59,6 +52,35 @@
           </button>
        </template>
     </BaseTable>
+
+    <!-- Pagination Mockup -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mt-6 text-[13px] font-medium text-gray-500 gap-4 bg-transparent px-2">
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <div>ทั้งหมด <span class="text-gray-900 mx-1">{{ panels.length }}</span> รายการ</div>
+        <div class="w-[1px] h-4 bg-gray-200"></div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">แสดงผล</span>
+          <div class="relative">
+            <select 
+              class="appearance-none bg-[#111827] text-white font-semibold text-xs rounded-full py-2.5 pl-5 pr-10 outline-none cursor-pointer shadow-md tracking-wider border border-transparent focus:ring-2 focus:ring-primary-main/20 transition-all"
+              v-model="limit"
+            >
+              <option :value="10">10 รายการ</option>
+              <option :value="20">20 รายการ</option>
+              <option :value="50">50 รายการ</option>
+            </select>
+            <ph-caret-down :size="12" weight="bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-1">
+        <button class="w-8 h-8 rounded-full text-gray-300 hover:text-gray-600 transition-colors flex items-center justify-center disabled:opacity-50"><ph-caret-left weight="bold" /></button>
+        <button class="w-8 h-8 bg-[#111827] rounded-full font-bold text-white shadow-md flex items-center justify-center text-xs">1</button>
+        <button class="w-8 h-8 rounded-full text-gray-600 hover:bg-gray-100 transition-all flex items-center justify-center text-xs font-bold">2</button>
+        <button class="w-8 h-8 rounded-full text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center"><ph-caret-right weight="bold" /></button>
+      </div>
+    </div>
 
     <!-- Modal: เพิ่ม/แก้ไขหน้าจอ -->
     <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in" @click.self="showModal = false">
@@ -183,6 +205,7 @@ const showModal = ref(false)
 const isEdit = ref(false)
 const editingId = ref(null)
 const searchQuery = ref('')
+const limit = ref(10)
 const filters = reactive({ branch: 'Headquarter' })
 
 const columns = [

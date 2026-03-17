@@ -23,7 +23,7 @@
           </tr>
           <tr v-else-if="!data || data.length === 0" class="border-b last:border-b-0">
             <td :colspan="columns.length" class="px-4 py-8 text-center text-gray-500">
-              ไม่พบข้อมูลโปรโมชั่น
+              ไม่พบข้อมูลโปรโมชัน
             </td>
           </tr>
           <tr 

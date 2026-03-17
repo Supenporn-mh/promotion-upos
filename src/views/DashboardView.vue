@@ -3,7 +3,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
       <div>
         <h2 class="text-3xl font-bold text-gray-900 tracking-tight">แดชบอร์ดภาพรวม</h2>
-        <p class="text-[13px] font-medium text-gray-500 mt-1.5 flex items-center gap-2"><ph-squares-four weight="fill" class="text-gray-400" /> สรุปข้อมูลการใช้งานโปรโมชั่นทั้งหมด</p>
+        <p class="text-[13px] font-medium text-gray-500 mt-1.5 flex items-center gap-2"><ph-squares-four weight="fill" class="text-gray-400" /> สรุปข้อมูลการใช้งานโปรโมชันทั้งหมด</p>
       </div>
       <div class="flex flex-col sm:flex-row items-end gap-3 w-full sm:w-auto">
          <div class="w-full sm:w-40">
@@ -25,7 +25,7 @@
             <ph-tag :size="24" weight="fill" />
          </div>
          <div>
-            <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">โปรโมชั่นที่มีอยู่</p>
+            <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">โปรโมชันที่มีอยู่</p>
             <h4 class="text-2xl font-bold text-gray-900">24 <span class="text-sm font-medium text-gray-500">แคมเปญ</span></h4>
          </div>
       </div>
@@ -64,7 +64,7 @@
     <!-- Charts / Content Area -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="col-span-1 lg:col-span-2 bg-white rounded-[20px] shadow-sm border border-gray-100 p-6 flex flex-col min-h-[400px]">
-        <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-6 uppercase">สถิติการใช้โปรโมชั่น ({{ chartData.length }} วัน)</h3>
+        <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-6 uppercase">สถิติการใช้โปรโมชัน ({{ chartData.length }} วัน)</h3>
         <div class="flex-1 flex items-end justify-between gap-1 overflow-x-auto mt-auto pb-4 hide-scrollbar">
             <!-- Dynamic Chart bars -->
             <div 
@@ -81,7 +81,7 @@
       </div>
 
       <div class="col-span-1 bg-white rounded-[20px] shadow-sm border border-gray-100 p-6">
-        <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-6 uppercase">โปรโมชั่นยอดฮิต</h3>
+        <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-6 uppercase">โปรโมชันยอดฮิต</h3>
         <div class="space-y-4">
            <!-- Rank 1 -->
            <div class="flex items-center gap-4">

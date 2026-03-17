@@ -27,7 +27,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
        <!-- Top Promotion Pie Chart Placeholder -->
        <div class="bg-white rounded-[24px] shadow-sm border border-gray-100 p-8 flex flex-col items-center">
-          <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-8 w-full uppercase">สัดส่วนประเภทของโปรโมชั่นที่ถูกใช้</h3>
+          <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-8 w-full uppercase">สัดส่วนประเภทของโปรโมชันที่ถูกใช้</h3>
           <div class="relative w-48 h-48 rounded-full border-[20px] border-blue-600/20 flex justify-center items-center shadow-inner">
              <div class="absolute inset-0 border-[20px] border-blue-600 rounded-full" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);"></div>
              <div class="absolute inset-0 border-[20px] border-teal-500 rounded-full" style="clip-path: polygon(100% 100%, 0 100%, 0 50%);"></div>
@@ -49,7 +49,7 @@
 
        <!-- Data Grid Table -->
        <div class="bg-white rounded-[24px] shadow-sm border border-gray-100 p-8 flex flex-col">
-          <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-4 w-full uppercase border-b border-gray-100 pb-4">ตารางผลตอบแทนจากโปรโมชั่น</h3>
+          <h3 class="font-bold text-gray-800 text-[13px] tracking-wide mb-4 w-full uppercase border-b border-gray-100 pb-4">ตารางผลตอบแทนจากโปรโมชัน</h3>
           <div class="space-y-4 flex-1 mt-2">
              <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
                <div>

@@ -1,32 +1,20 @@
 <template>
   <div class="flex flex-col w-full h-full pb-10">
     <!-- Action Bar -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 bg-white p-5 rounded-[20px] shadow-sm border border-gray-100 shadow-primary-main/5">
-      <div class="flex items-center gap-3 text-sm font-semibold text-gray-500 uppercase tracking-wider">
-        <span>Show</span>
-        <select 
-          class="bg-gray-50 border border-transparent rounded-lg px-4 py-2.5 outline-none focus:bg-white focus:border-primary-main text-gray-900 shadow-inner transition-all w-20 appearance-none text-center cursor-pointer"
-          v-model="limit"
-        >
-          <option :value="10">10</option>
-          <option :value="20">20</option>
-          <option :value="50">50</option>
-        </select>
-        <span>entries</span>
-      </div>
+    <div class="flex flex-col sm:flex-row justify-end items-start sm:items-center mb-6 gap-4 bg-white p-5 rounded-[20px] shadow-sm border border-gray-100 shadow-primary-main/5">
       <div class="flex items-center w-full sm:w-auto">
         <div class="relative w-full sm:w-80">
           <ph-magnifying-glass class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" :size="18" weight="bold" />
           <input 
             type="text"
             v-model="searchQuery"
-            placeholder="ค้นหาโปรโมชั่น..."
+            placeholder="ค้นหาโปรโมชัน..."
             class="w-full bg-gray-50 border border-transparent rounded-xl pl-11 pr-4 py-3 outline-none focus:bg-white focus:border-primary-main shadow-inner transition-all text-sm font-medium text-gray-900 placeholder-gray-400"
           />
         </div>
         <button @click="router.push('/promotions/create')" class="ml-4 bg-primary-main hover:bg-primary-dark text-white px-5 py-3 rounded-xl flex items-center gap-2 font-semibold transition-all shadow-lg shadow-primary-main/20 active:scale-95 text-xs uppercase tracking-widest whitespace-nowrap">
           <ph-plus :size="16" weight="bold" />
-          เพิ่มโปรโมชั่น
+          เพิ่มโปรโมชัน
         </button>
       </div>
     </div>
@@ -99,12 +87,30 @@
     
     <!-- Pagination Mockup -->
     <div class="flex flex-col sm:flex-row justify-between items-center mt-6 text-[13px] font-medium text-gray-500 gap-4 bg-transparent px-2">
-      <div>แสดงพบบันทึก <span class="text-gray-900 font-semibold mx-1">{{ filteredPromotions.length }}</span> รายการ (จากทั้งหมด <span class="text-gray-900 font-semibold mx-1">{{ totalItems || promotionsData.length }}</span>)</div>
-      <div class="flex gap-2">
-        <button class="px-3.5 py-2 bg-white border border-gray-200 hover:border-gray-300 hover:text-gray-700 rounded-lg text-gray-400 disabled:opacity-50 transition-all shadow-sm flex items-center justify-center"><ph-caret-left weight="bold" /></button>
-        <button class="w-8 h-9 bg-gray-900 rounded-lg font-semibold text-white shadow-md shadow-gray-900/20 flex items-center justify-center">1</button>
-        <button class="w-8 h-9 bg-white border border-gray-200 hover:border-gray-300 rounded-lg text-gray-600 transition-all shadow-sm flex items-center justify-center">2</button>
-        <button class="px-3.5 py-2 bg-white border border-gray-200 hover:border-gray-300 hover:text-gray-700 rounded-lg text-gray-400 transition-all shadow-sm flex items-center justify-center"><ph-caret-right weight="bold" /></button>
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <div>ทั้งหมด <span class="text-gray-900 mx-1">{{ totalItems || promotionsData.length }}</span> รายการ</div>
+        <div class="w-[1px] h-4 bg-gray-200"></div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">แสดงผล</span>
+          <div class="relative">
+            <select 
+              class="appearance-none bg-[#111827] text-white font-semibold text-xs rounded-full py-2.5 pl-5 pr-10 outline-none cursor-pointer shadow-md tracking-wider border border-transparent focus:ring-2 focus:ring-primary-main/20 transition-all"
+              v-model="limit"
+            >
+              <option :value="10">10 รายการ</option>
+              <option :value="20">20 รายการ</option>
+              <option :value="50">50 รายการ</option>
+            </select>
+            <ph-caret-down :size="12" weight="bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-1">
+        <button class="w-8 h-8 rounded-full text-gray-300 hover:text-gray-600 transition-colors flex items-center justify-center disabled:opacity-50"><ph-caret-left weight="bold" /></button>
+        <button class="w-8 h-8 bg-[#111827] rounded-full font-bold text-white shadow-md flex items-center justify-center text-xs">1</button>
+        <button class="w-8 h-8 rounded-full text-gray-600 hover:bg-gray-100 transition-all flex items-center justify-center text-xs font-bold">2</button>
+        <button class="w-8 h-8 rounded-full text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center"><ph-caret-right weight="bold" /></button>
       </div>
     </div>
 
@@ -125,7 +131,7 @@ const isLoading = ref(false)
 const tableColumns = ref([
   { key: 'seq', label: 'ลำดับ', align: 'center' },
   { key: 'promo_code', label: 'รหัสโปรโมชัน', align: 'center' },
-  { key: 'name', label: 'ชื่อโปรโมชั่น', align: 'left' },
+  { key: 'name', label: 'ชื่อโปรโมชัน', align: 'left' },
   { key: 'date_range', label: 'วันที่เริ่ม - วันที่สิ้นสุด', align: 'center' },
   { key: 'time_range', label: 'เวลาที่เริ่ม - เวลาที่สิ้นสุด', align: 'center' },
   { key: 'eligibility', label: 'สิทธิ', align: 'center' },
@@ -134,6 +140,18 @@ const tableColumns = ref([
   { key: 'status_badge', label: 'สถานะ', align: 'center' },
   { key: 'actions', label: 'จัดการ', align: 'center' },
 ])
+
+// Fallback mock data (ใช้เมื่อ Backend Server ไม่ได้รัน)
+const mockPromotions = [
+  { id: 1, name: 'ลดสมาชิกใหม่ 15%', promo_code: 'NEW15', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 100, used_count: 45, status: 'ACTIVE', start_datetime: '2026-03-01T00:01:00', end_datetime: '2026-12-31T23:59:00' },
+  { id: 2, name: 'ซื้อชาบู แถมโค้ก', promo_code: 'FREE-COKE', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 50, used_count: 20, status: 'ACTIVE', start_datetime: '2026-03-10T10:00:00', end_datetime: '2026-04-10T22:00:00' },
+  { id: 3, name: 'Happy Hour 1 แถม 1', promo_code: 'HH-BOGO', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 0, used_count: 128, status: 'ACTIVE', start_datetime: '2026-01-01T14:00:00', end_datetime: '2026-06-30T17:00:00' },
+  { id: 4, name: 'แลกซื้อน้ำดื่ม 5 บาท', promo_code: 'RDM-WATER', eligibility: 'ALL', promo_type: 'REDEMPTION', quota: 200, used_count: 180, status: 'ACTIVE', start_datetime: '2026-02-01T00:01:00', end_datetime: '2026-05-31T23:59:00' },
+  { id: 5, name: 'ส่วนลดวันเกิด 20%', promo_code: 'BDAY20', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 10, used_count: 2, status: 'ACTIVE', start_datetime: '2026-01-01T00:01:00', end_datetime: '2026-12-31T23:59:00' },
+  { id: 6, name: 'Seasonal Sale - Summer', promo_code: 'SUMMER24', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 500, used_count: 50, status: 'INACTIVE', start_datetime: '2026-04-01T09:00:00', end_datetime: '2026-04-30T21:00:00' },
+  { id: 7, name: 'Coffee Lover Set', promo_code: 'COFFEE-SET', eligibility: 'MEMBER', promo_type: 'REDEMPTION', quota: 100, used_count: 15, status: 'ACTIVE', start_datetime: '2026-03-15T08:00:00', end_datetime: '2026-09-15T20:00:00' },
+  { id: 8, name: 'Student Discount 10%', promo_code: 'STUDENT10', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 0, used_count: 320, status: 'ACTIVE', start_datetime: '2026-01-15T00:01:00', end_datetime: '2026-12-31T23:59:00' },
+]
 
 const promotionsData = ref([])
 const totalItems = ref(0)
@@ -151,7 +169,9 @@ const fetchPromotions = async () => {
     promotionsData.value = response.data.items || []
     totalItems.value = response.data.pagination.total || 0
   } catch (error) {
-    console.error('Failed to fetch promotions', error)
+    console.warn('Backend ไม่ได้รัน — ใช้ข้อมูลตัวอย่างแทน')
+    promotionsData.value = mockPromotions
+    totalItems.value = mockPromotions.length
   } finally {
     isLoading.value = false
   }
@@ -170,7 +190,7 @@ const toggleStatus = async (row) => {
   
   if (newState === 'INACTIVE') {
     const ok = await confirm({
-      title: 'ปิดการใช้งานโปรโมชั่น?',
+      title: 'ปิดการใช้งานโปรโมชัน?',
       message: `คุณต้องการปิดการใช้งาน "${row.name}" ใช่หรือไม่? ลูกค้าจะไม่สามารถใช้สิทธิ์นี้ได้ชั่วคราว`,
       type: 'warning'
     })
