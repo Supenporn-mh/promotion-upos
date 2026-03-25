@@ -4,7 +4,6 @@ import Components from 'unplugin-vue-components/vite'
 import path from 'path'
 
 export default defineConfig({
-  base: './',
   plugins: [
     vue(),
     Components({
