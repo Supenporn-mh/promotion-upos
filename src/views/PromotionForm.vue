@@ -68,8 +68,11 @@
           <ph-shopping-cart :size="18" weight="bold" class="text-primary-main"/> เงื่อนไขการซื้อ (ซื้ออะไรเพื่อรับสิทธิ)
         </h3>
         
-        <!-- Row 1: รูปแบบการซื้อ full-width -->
-        <div class="w-full">
+        <!-- Row: Target configuration -->
+        <div 
+          class="grid gap-4"
+          :class="form.targetType === 'TOTAL_SALES' ? 'grid-cols-1' : 'md:grid-cols-2 grid-cols-1'"
+        >
           <BaseSelect 
             id="promo_target_type" 
             label="รูปแบบการซื้อ" 
@@ -77,22 +80,13 @@
             :options="[{label:'ซื้อครบตามยอด (บาท)', value:'TOTAL_SALES'}, {label:'ระบุรายสินค้า (SKU)', value:'ITEM'}, {label:'ระบุประเภทสินค้า', value:'CATEGORY'}]"
             required
           />
-        </div>
-
-        <!-- Row 2: Two columns for target configuration when not TOTAL_SALES -->
-        <div v-if="form.targetType !== 'TOTAL_SALES'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <BaseSelect 
-            id="promo_target_type2" 
-            label="รูปแบบการซื้อ" 
-            v-model="form.targetType"
-            :options="[{label:'ซื้อครบตามยอด (บาท)', value:'TOTAL_SALES'}, {label:'ระบุรายสินค้า (SKU)', value:'ITEM'}, {label:'ระบุประเภทสินค้า', value:'CATEGORY'}]"
-            required
-          />
-          <BaseSelect 
+            v-if="form.targetType !== 'TOTAL_SALES'"
             id="promo_target_selection_rule" 
             label="เงื่อนไขการซื้อ" 
             v-model="form.targetSelectionRule"
             :options="[{label:'ซื้อทุกรายการ', value:'ALL'}, {label:'ซื้ออย่างใดอย่างหนึ่ง', value:'CHOOSE_ONE'}]"
+            :disabled="form.targetType === 'CATEGORY'"
           />
         </div>
 
@@ -279,8 +273,12 @@
       </div>
 
       <!-- Section: ส่วนลด -->
-      <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-[20px] bg-white border border-gray-100 shadow-sm shadow-blue-500/5 mt-2" v-if="form.type === 'DISCOUNT'">
-         <h3 class="col-span-1 md:col-span-2 font-semibold text-gray-800 text-[13px] tracking-wide flex items-center gap-2 uppercase mb-1">
+      <div 
+        class="col-span-1 md:col-span-2 grid gap-6 p-6 rounded-[20px] bg-white border border-gray-100 shadow-sm shadow-blue-500/5 mt-2" 
+        :class="form.discountType === 'PERCENT' ? 'md:grid-cols-3' : 'md:grid-cols-2'"
+        v-if="form.type === 'DISCOUNT'"
+      >
+         <h3 class="col-span-full font-semibold text-gray-800 text-[13px] tracking-wide flex items-center gap-2 uppercase mb-1">
           <ph-ticket :size="18" weight="bold" class="text-primary-main" /> รูปแบบและมูลค่าส่วนลด
         </h3>
         <div class="col-span-1">
@@ -288,6 +286,9 @@
         </div>
         <div class="col-span-1">
           <BaseInput id="promo_discount_value" :label="form.discountType === 'PERCENT' ? 'มูลค่า (%)' : 'มูลค่า (บาท)'" type="number" v-model="form.discountValue" />
+        </div>
+        <div class="col-span-1" v-if="form.discountType === 'PERCENT'">
+          <BaseInput id="promo_max_discount" label="มูลค่าสูงสุด (สูงสุด)" type="number" v-model="form.maxDiscount" placeholder="0 = ไม่จำกัด" />
         </div>
       </div>
 
@@ -420,6 +421,13 @@ watch(() => form.eligibility, (newVal) => {
   }
 }, { immediate: true })
 
+watch(() => form.targetType, (newVal) => {
+  selectedProducts.value = []
+  if (newVal === 'CATEGORY') {
+    form.targetSelectionRule = 'CHOOSE_ONE'
+  }
+})
+
 const toggleDropdown = (key) => {
   const current = showDropdowns[key]
   // Close all
@@ -529,7 +537,6 @@ onMounted(async () => {
 })
 onUnmounted(() => document.removeEventListener('click', clickHandler))
 
-watch(() => form.targetType, () => selectedProducts.value = [])
 watch(() => form.rewardType, () => selectedRewards.value = [])
 
 const submit = () => {

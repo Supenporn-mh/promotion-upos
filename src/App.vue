@@ -16,13 +16,7 @@
           รายการโปรโมชัน
         </router-link>
         
-        <router-link to="/pos-display" active-class="bg-blue-50 text-blue-700 shadow-inner" class="flex items-center justify-between px-4 py-3 rounded-xl transition-all group text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-          <div class="flex items-center gap-3">
-            <ph-desktop :size="20" weight="bold" class="opacity-60 group-hover:text-gray-900" /> 
-            แสดงผลบน POS
-          </div>
-          <span class="bg-gray-100 text-gray-400 text-[10px] px-2 py-0.5 rounded-md font-semibold">New</span>
-        </router-link>
+        <!-- Removed Display on POS menu as requested -->
         
         <div class="pt-4 pb-2">
           <div class="border-t border-gray-100"></div>

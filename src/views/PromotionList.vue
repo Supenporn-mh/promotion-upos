@@ -82,6 +82,22 @@
             <span v-else class="flex items-center gap-1.5 bg-gray-50 text-gray-500 px-2.5 py-1 rounded-md text-[10px] font-bold border border-gray-100 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> ปิดใช้งาน</span>
          </div>
       </template>
+
+      <template #cell-is_recommended="{ row }">
+        <div class="flex items-center justify-center">
+          <button 
+            @click="toggleRecommended(row)"
+            class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-main focus:ring-offset-2"
+            :class="row.is_recommended ? 'bg-primary-main' : 'bg-gray-200'"
+          >
+            <span 
+              aria-hidden="true" 
+              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+              :class="row.is_recommended ? 'translate-x-4' : 'translate-x-0'"
+            ></span>
+          </button>
+        </div>
+      </template>
       
     </BaseTable>
     
@@ -138,19 +154,20 @@ const tableColumns = ref([
   { key: 'promo_type', label: 'ประเภท', align: 'center' },
   { key: 'quota_usage', label: 'โควต้า', align: 'center' },
   { key: 'status_badge', label: 'สถานะ', align: 'center' },
+  { key: 'is_recommended', label: 'โปรโมชันแนะนำ', align: 'center' },
   { key: 'actions', label: 'จัดการ', align: 'center' },
 ])
 
 // Fallback mock data (ใช้เมื่อ Backend Server ไม่ได้รัน)
 const mockPromotions = [
-  { id: 1, name: 'ลดสมาชิกใหม่ 15%', promo_code: 'NEW15', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 100, used_count: 45, status: 'ACTIVE', start_datetime: '2026-03-01T00:01:00', end_datetime: '2026-12-31T23:59:00' },
-  { id: 2, name: 'ซื้อชาบู แถมโค้ก', promo_code: 'FREE-COKE', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 50, used_count: 20, status: 'ACTIVE', start_datetime: '2026-03-10T10:00:00', end_datetime: '2026-04-10T22:00:00' },
-  { id: 3, name: 'Happy Hour 1 แถม 1', promo_code: 'HH-BOGO', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 0, used_count: 128, status: 'ACTIVE', start_datetime: '2026-01-01T14:00:00', end_datetime: '2026-06-30T17:00:00' },
-  { id: 4, name: 'แลกซื้อน้ำดื่ม 5 บาท', promo_code: 'RDM-WATER', eligibility: 'ALL', promo_type: 'REDEMPTION', quota: 200, used_count: 180, status: 'ACTIVE', start_datetime: '2026-02-01T00:01:00', end_datetime: '2026-05-31T23:59:00' },
-  { id: 5, name: 'ส่วนลดวันเกิด 20%', promo_code: 'BDAY20', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 10, used_count: 2, status: 'ACTIVE', start_datetime: '2026-01-01T00:01:00', end_datetime: '2026-12-31T23:59:00' },
-  { id: 6, name: 'Seasonal Sale - Summer', promo_code: 'SUMMER24', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 500, used_count: 50, status: 'INACTIVE', start_datetime: '2026-04-01T09:00:00', end_datetime: '2026-04-30T21:00:00' },
-  { id: 7, name: 'Coffee Lover Set', promo_code: 'COFFEE-SET', eligibility: 'MEMBER', promo_type: 'REDEMPTION', quota: 100, used_count: 15, status: 'ACTIVE', start_datetime: '2026-03-15T08:00:00', end_datetime: '2026-09-15T20:00:00' },
-  { id: 8, name: 'Student Discount 10%', promo_code: 'STUDENT10', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 0, used_count: 320, status: 'ACTIVE', start_datetime: '2026-01-15T00:01:00', end_datetime: '2026-12-31T23:59:00' },
+  { id: 1, name: 'ลดสมาชิกใหม่ 15%', promo_code: 'NEW15', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 100, used_count: 45, status: 'ACTIVE', start_datetime: '2026-03-01T00:01:00', end_datetime: '2026-12-31T23:59:00', is_recommended: true },
+  { id: 2, name: 'ซื้อชาบู แถมโค้ก', promo_code: 'FREE-COKE', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 50, used_count: 20, status: 'ACTIVE', start_datetime: '2026-03-10T10:00:00', end_datetime: '2026-04-10T22:00:00', is_recommended: false },
+  { id: 3, name: 'Happy Hour 1 แถม 1', promo_code: 'HH-BOGO', eligibility: 'ALL', promo_type: 'FREEBIE', quota: 0, used_count: 128, status: 'ACTIVE', start_datetime: '2026-01-01T14:00:00', end_datetime: '2026-06-30T17:00:00', is_recommended: true },
+  { id: 4, name: 'แลกซื้อน้ำดื่ม 5 บาท', promo_code: 'RDM-WATER', eligibility: 'ALL', promo_type: 'REDEMPTION', quota: 200, used_count: 180, status: 'ACTIVE', start_datetime: '2026-02-01T00:01:00', end_datetime: '2026-05-31T23:59:00', is_recommended: false },
+  { id: 5, name: 'ส่วนลดวันเกิด 20%', promo_code: 'BDAY20', eligibility: 'MEMBER', promo_type: 'DISCOUNT', quota: 10, used_count: 2, status: 'ACTIVE', start_datetime: '2026-01-01T00:01:00', end_datetime: '2026-12-31T23:59:00', is_recommended: false },
+  { id: 6, name: 'Seasonal Sale - Summer', promo_code: 'SUMMER24', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 500, used_count: 50, status: 'INACTIVE', start_datetime: '2026-04-01T09:00:00', end_datetime: '2026-04-30T21:00:00', is_recommended: false },
+  { id: 7, name: 'Coffee Lover Set', promo_code: 'COFFEE-SET', eligibility: 'MEMBER', promo_type: 'REDEMPTION', quota: 100, used_count: 15, status: 'ACTIVE', start_datetime: '2026-03-15T08:00:00', end_datetime: '2026-09-15T20:00:00', is_recommended: false },
+  { id: 8, name: 'Student Discount 10%', promo_code: 'STUDENT10', eligibility: 'ALL', promo_type: 'DISCOUNT', quota: 0, used_count: 320, status: 'ACTIVE', start_datetime: '2026-01-15T00:01:00', end_datetime: '2026-12-31T23:59:00', is_recommended: false },
 ]
 
 const promotionsData = ref([])
@@ -199,6 +216,14 @@ const toggleStatus = async (row) => {
 
   row.status = newState
   showToast(`${newState === 'ACTIVE' ? 'เปิด' : 'ปิด'}การใช้งาน ${row.name} สำเร็จ`)
+}
+
+const toggleRecommended = async (row) => {
+  const newState = !row.is_recommended
+  
+  // ในเคสจริงคือยิง API
+  row.is_recommended = newState
+  showToast(`${newState ? 'ตั้งเป็น' : 'ยกเลิก'}โปรโมชันแนะนำ ${row.name} สำเร็จ`)
 }
 
 const filteredPromotions = computed(() => {
