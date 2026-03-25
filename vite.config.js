@@ -4,8 +4,7 @@ import Components from 'unplugin-vue-components/vite'
 import path from 'path'
 
 export default defineConfig({
-  base: '/promotion-upos/',  
-
+  base: './',
   plugins: [
     vue(),
     Components({
