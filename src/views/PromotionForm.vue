@@ -314,29 +314,100 @@
       </div>
 
       <!-- Section: โควต้า -->
-      <div class="col-span-1 md:col-span-2 p-6 rounded-[20px] bg-gray-50 border border-transparent shadow-inner mt-2">
-         <h3 class="font-semibold text-gray-400 mb-4 text-[11px] uppercase tracking-widest">การควบคุมและโควต้าสิทธิ์</h3>
-         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="q in [{k:'quota',l:'โควต้ารวม'},{k:'perOrder',l:'ต่อออเดอร์'},{k:'perCustomer',l:'ต่อคน'}]" :key="q.k" class="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
-               <div class="flex justify-between items-center mb-2">
-                  <span class="text-[10px] font-semibold text-gray-500">{{ q.l }}</span>
-                  <label class="flex items-center gap-1" :class="q.k === 'perCustomer' && (form.eligibility === 'ALL' || form.eligibility === 'GENERAL') ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'">
-                    <input type="checkbox" v-model="unlimited[q.k]" class="hidden peer" :disabled="q.k === 'perCustomer' && (form.eligibility === 'ALL' || form.eligibility === 'GENERAL')">
-                    <div class="w-3.5 h-3.5 rounded border-2 border-gray-200 peer-checked:bg-primary-main peer-checked:border-primary-main flex items-center justify-center transition-all">
-                       <ph-check v-if="unlimited[q.k]" :size="10" weight="bold" class="text-white" />
-                    </div>
-                    <span class="text-[9px] font-semibold" :class="unlimited[q.k] ? 'text-primary-main':'text-gray-300'">ไม่จำกัด</span>
-                  </label>
-               </div>
-               <input 
-                 type="number" 
-                 v-model="form[q.k === 'quota' ? 'quota' : (q.k === 'perOrder' ? 'maxPerOrder' : 'maxPerCustomer')]" 
-                 :disabled="unlimited[q.k]"
-                 class="w-full bg-gray-50 rounded-lg py-1.5 px-3 text-sm font-semibold disabled:opacity-30 outline-none focus:ring-1 focus:ring-primary-main text-primary-dark"
-                 :placeholder="unlimited[q.k] ? '∞' : '0'"
-               >
-            </div>
-         </div>
+      <!-- Section: โควต้า -->
+      <div class="col-span-1 md:col-span-2 flex flex-col gap-4 mt-2">
+        
+        <!-- ส่วนที่ 1: โควต้าพื้นฐาน -->
+        <div class="p-6 rounded-[20px] bg-gray-50 border border-gray-100 shadow-inner">
+           <h3 class="font-semibold text-gray-400 mb-4 text-[11px] uppercase tracking-widest">การควบคุมและโควต้าสิทธิพื้นฐาน</h3>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div v-for="q in [{k:'quota',l:'โควต้ารวม'},{k:'perOrder',l:'ต่อออเดอร์'},{k:'perCustomer',l:'ต่อคน'}]" :key="q.k" class="bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm hover:border-gray-200 transition-colors">
+                 <div class="flex justify-between items-center mb-3">
+                    <span class="text-[11px] font-semibold text-gray-600">{{ q.l }}</span>
+                    <label class="flex items-center gap-1.5" :class="q.k === 'perCustomer' && (form.eligibility === 'ALL' || form.eligibility === 'GENERAL') ? 'cursor-not-allowed opacity-40' : 'cursor-pointer group'">
+                      <input type="checkbox" v-model="unlimited[q.k]" class="hidden peer" :disabled="q.k === 'perCustomer' && (form.eligibility === 'ALL' || form.eligibility === 'GENERAL')">
+                      <div class="w-4 h-4 rounded border-2 border-gray-200 peer-checked:bg-primary-main peer-checked:border-primary-main flex items-center justify-center transition-all group-hover:border-primary-main/50">
+                         <ph-check v-if="unlimited[q.k]" :size="10" weight="bold" class="text-white" />
+                      </div>
+                      <span class="text-[10px] font-bold" :class="unlimited[q.k] ? 'text-primary-main':'text-gray-400 group-hover:text-gray-600'">ไม่จำกัด</span>
+                    </label>
+                 </div>
+                 <input 
+                   type="number" 
+                   v-model="form[q.k === 'quota' ? 'quota' : (q.k === 'perOrder' ? 'maxPerOrder' : 'maxPerCustomer')]" 
+                   :disabled="unlimited[q.k]"
+                   class="w-full bg-gray-50 border border-transparent rounded-xl py-2 px-3 text-sm font-bold disabled:opacity-30 outline-none focus:bg-white focus:border-primary-main focus:ring-4 focus:ring-primary-main/5 text-gray-900 transition-all"
+                   :placeholder="unlimited[q.k] ? '∞' : 'ระบุจำนวนสูงสุด'"
+                 >
+              </div>
+           </div>
+        </div>
+
+        <!-- ส่วนที่ 2: โควต้าเฉพาะสมาชิก -->
+        <div class="p-6 rounded-[20px] bg-gray-50 border border-gray-100 shadow-inner" v-if="form.eligibility === 'MEMBER'">
+           <h3 class="font-semibold text-gray-400 mb-4 text-[11px] uppercase tracking-widest flex items-center gap-2">
+              <ph-users :size="16" weight="bold" class="text-primary-main" /> เงื่อนไขเฉพาะสมาชิก (Member Only)
+           </h3>
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- จำนวนการใช้สิทธิ์ (Cycle) -->
+              <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:border-gray-200 transition-colors">
+                 <div class="flex justify-between items-center mb-3">
+                    <span class="text-[11px] font-bold text-gray-700">รอบการใช้สิทธิ์</span>
+                    <label class="flex items-center gap-1.5 cursor-pointer group">
+                      <input type="checkbox" v-model="unlimited.resetFrequency" class="hidden peer">
+                      <div class="w-4 h-4 rounded border-2 border-gray-200 peer-checked:bg-primary-main peer-checked:border-primary-main flex items-center justify-center transition-all group-hover:border-primary-main/50">
+                         <ph-check v-if="unlimited.resetFrequency" :size="10" weight="bold" class="text-white" />
+                      </div>
+                      <span class="text-[10px] font-bold transition-all" :class="unlimited.resetFrequency ? 'text-primary-main':'text-gray-400 group-hover:text-gray-600'">ไม่จำกัด</span>
+                    </label>
+                 </div>
+                 <div class="relative">
+                   <select 
+                     v-model="form.quotaResetFrequency" 
+                     :disabled="unlimited.resetFrequency"
+                     class="appearance-none w-full bg-gray-50 rounded-xl py-2 pl-4 pr-10 text-[13px] font-bold disabled:opacity-30 outline-none focus:bg-white focus:border-primary-main focus:ring-4 focus:ring-primary-main/5 text-gray-900 cursor-pointer transition-all border border-transparent"
+                     :class="unlimited.resetFrequency ? 'cursor-not-allowed hidden' : ''"
+                   >
+                     <option value="DAILY">รายวัน (Daily)</option>
+                     <option value="WEEKLY">รายสัปดาห์ (Weekly)</option>
+                     <option value="MONTHLY">รายเดือน (Monthly)</option>
+                   </select>
+                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400" :class="{ 'hidden': unlimited.resetFrequency }">
+                     <ph-caret-down :size="14" weight="bold" />
+                   </div>
+                   <div v-if="unlimited.resetFrequency" class="w-full bg-gray-50 rounded-xl py-2 px-4 text-[12px] font-semibold text-gray-400 border border-transparent opacity-80 cursor-not-allowed">
+                     ยึดตามโควต้า "ต่อคน" สูงสุดตลอดแคมเปญ<br/><span class="text-[10px] font-normal">(ไม่มีการรีเซ็ตรอบ)</span>
+                   </div>
+                 </div>
+              </div>
+
+              <!-- จำนวนครั้งจำกัดตามรอบ -->
+              <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:border-gray-200 transition-colors" v-if="!unlimited.resetFrequency">
+                 <div class="flex justify-between items-center mb-3">
+                    <span class="text-[11px] font-bold text-gray-700">
+                      จำนวนครั้ง / {{ form.quotaResetFrequency === 'DAILY' ? 'วัน' : (form.quotaResetFrequency === 'WEEKLY' ? 'สัปดาห์' : 'เดือน') }}
+                    </span>
+                    <label class="flex items-center gap-1.5 cursor-pointer group">
+                      <input type="checkbox" v-model="unlimited.maxPerPeriod" class="hidden peer">
+                      <div class="w-4 h-4 rounded border-2 border-gray-200 peer-checked:bg-primary-main peer-checked:border-primary-main flex items-center justify-center transition-all group-hover:border-primary-main/50">
+                         <ph-check v-if="unlimited.maxPerPeriod" :size="10" weight="bold" class="text-white" />
+                      </div>
+                      <span class="text-[10px] font-bold transition-all" :class="unlimited.maxPerPeriod ? 'text-primary-main':'text-gray-400 group-hover:text-gray-600'">ไม่จำกัด</span>
+                    </label>
+                 </div>
+                 <input 
+                   type="number" 
+                   v-model="form.maxPerPeriod" 
+                   :disabled="unlimited.maxPerPeriod"
+                   class="w-full bg-gray-50 rounded-xl py-2 px-4 text-[13px] font-bold disabled:opacity-30 outline-none focus:bg-white focus:border-primary-main focus:ring-4 focus:ring-primary-main/5 text-gray-900 border border-transparent transition-all"
+                   :placeholder="unlimited.maxPerPeriod ? '∞' : 'ระบุจำนวนครั้งสูงสุด'"
+                 >
+              </div>
+              
+           </div>
+        </div>
+
       </div>
 
     </div>
@@ -379,7 +450,7 @@ const form = reactive({
   discountType: 'PERCENT', discountValue: 0, maxDiscount: 0,
   rewardType: 'ITEM', rewardSelectionRule: 'ALL', rewardItemId: '', rewardQty: 1, redemptionPrice: 0,
   startDate: new Date().toISOString().split('T')[0], endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  startTime: '00:01', endTime: '23:59', quota: 0, maxPerOrder: 0, maxPerCustomer: 0,
+  startTime: '00:01', endTime: '23:59', quota: 0, maxPerOrder: 0, maxPerCustomer: 0, maxPerPeriod: 0, quotaResetFrequency: 'DAILY',
   imageUrl: ''
 })
 
@@ -397,7 +468,7 @@ const handleFileUpload = (e) => {
   }
 }
 
-const unlimited = reactive({ quota: false, perOrder: true, perCustomer: true, targetAmount: true })
+const unlimited = reactive({ quota: false, perOrder: true, perCustomer: true, targetAmount: true, resetFrequency: true, maxPerPeriod: true })
 const showDropdowns = reactive({ target: false, reward: false })
 const searchStrings = reactive({ target: '', reward: '' })
 
